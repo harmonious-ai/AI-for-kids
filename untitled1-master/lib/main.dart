@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:io';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,6 +18,13 @@ class MyApp extends StatelessWidget {
 }
 
 class MainView extends StatelessWidget {
+  void startServiceInPlatform() async {
+    if(Platform.isAndroid){
+      var methodChannel = MethodChannel("com.retroportalstudio.messages");
+      String data = await methodChannel.invokeMethod("startService");
+      debugPrint(data);
+    }
+  }
   bool _turtle = false;
   bool _eye = false;
   bool _hand = false;
@@ -63,6 +73,7 @@ class MainView extends StatelessWidget {
                     padding: const EdgeInsets.all(10.0),
                     child: ElevatedButton(
                       onPressed: () {
+                        startServiceInPlatform();
                         _turtle = !(_turtle);
                       },
                       style: ButtonStyle(
@@ -119,3 +130,5 @@ class MainView extends StatelessWidget {
     );
   }
 }
+
+
