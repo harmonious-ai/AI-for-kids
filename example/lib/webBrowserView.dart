@@ -7,7 +7,12 @@ import 'dart:math' as math;
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebBrowserView extends StatefulWidget {
-  const WebBrowserView({Key? key}) : super(key: key);
+  String url = "";
+
+  // 생성자(Constructor)
+  WebBrowserView(String inputUrl) {
+    url = inputUrl;
+  }
 
   @override
   _WebBrowserViewState createState() => _WebBrowserViewState();
@@ -19,6 +24,7 @@ class _WebBrowserViewState extends State<WebBrowserView> {
 
   @override
   void initState() {
+    // 핸드폰
     accelerometerEvents.listen((AccelerometerEvent event) {
       deviceAngle = (event.z * 1000).toInt() / 100;
       print("faceAngle: $faceAngle\ndeviceAngle: $deviceAngle");
@@ -39,7 +45,7 @@ class _WebBrowserViewState extends State<WebBrowserView> {
             left: 0,
             right: 0,
             child: WebView(
-              initialUrl: "https://m.naver.com",
+              initialUrl: widget.url,
               javascriptMode: JavascriptMode.unrestricted,
             ),
           ),
@@ -80,11 +86,20 @@ class _WebBrowserViewState extends State<WebBrowserView> {
     //   print("18번 z");
     //   print(landmarkList.landmark.asMap()[18]!.z);
     //   print(" ");
+
+    // 얼굴
     double yCal = landmarkList.landmark.asMap()[18]!.y -
         landmarkList.landmark.asMap()[8]!.y;
     double zCal = landmarkList.landmark.asMap()[18]!.z -
         landmarkList.landmark.asMap()[8]!.z;
     double result = calculateDegree(a: zCal, b: yCal);
+
+    // 눈
+    // double xCal = landmarkList.landmark.asMap()[133]!.x -
+    //     landmarkList.landmark.asMap()[33]!.x;
+    // double yCal = landmarkList.landmark.asMap()[145]!.y -
+    //     landmarkList.landmark.asMap()[159]!.y;
+    // double result = calculateDegree(a: yCal, b: xCal);
 
     faceAngle = result;
   }
